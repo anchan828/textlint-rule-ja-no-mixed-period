@@ -39,6 +39,18 @@ tester.run("textlint-rule-ja-no-mixed-period", rule, {
             options: {
                 allowPeriodMarks: [":"]
             },
+        },
+        {
+            text: "= 章",
+            options: {
+                allowPatterns: [/^={1,4}\s/]
+            },
+        },
+        {
+            text: "==== 段のキャプション",
+            options: {
+                allowPatterns: [/^={1,4}\s/]
+            },
         }
     ],
     invalid: [
@@ -138,6 +150,32 @@ tester.run("textlint-rule-ja-no-mixed-period", rule, {
                     message: `文末が"。"で終わっていません。`,
                     line: 1,
                     column: 11
+                }
+            ]
+        },
+        {
+            text: "=無効なキャプション",
+            options: {
+                allowPatterns: [/^={1,4}\s/]
+            },
+            errors: [
+                {
+                    message: `文末が"。"で終わっていません。`,
+                    line: 1,
+                    column: 10
+                }
+            ]
+        },
+        {
+            text: "===== 無効なキャプション",
+            options: {
+                allowPatterns: [/^={1,4}\s/]
+            },
+            errors: [
+                {
+                    message: `文末が"。"で終わっていません。`,
+                    line: 1,
+                    column: 15
                 }
             ]
         },

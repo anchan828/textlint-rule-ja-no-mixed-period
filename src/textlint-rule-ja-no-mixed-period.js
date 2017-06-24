@@ -20,7 +20,9 @@ const defaultOptions = {
     allowEmojiAtEnd: false,
     // 句点で終わって無い場合に`periodMark`を--fix時に追加するかどうか
     // デフォルトでは自動的に追加しない
-    forceAppendPeriod: false
+    forceAppendPeriod: false,
+    // 指定した正規表現にマッチした場合は無視する
+    allowPatterns: []
 };
 const reporter = (context, options = {}) => {
     const { Syntax, RuleError, report, fixer, getSource } = context;
@@ -35,6 +37,9 @@ const reporter = (context, options = {}) => {
     const forceAppendPeriod = options.forceAppendPeriod !== undefined
         ? options.forceAppendPeriod
         : defaultOptions.forceAppendPeriod;
+    const allowPatterns = options.allowPatterns !== undefined
+        ? options.allowPatterns
+        : defaultOptions.allowPatterns;
 
     const ignoredNodeTypes = [
         Syntax.ListItem, Syntax.Link, Syntax.Code, Syntax.Image, Syntax.BlockQuote, Syntax.Emphasis
@@ -54,6 +59,10 @@ const reporter = (context, options = {}) => {
             }
             // 日本語が含まれていない文章は無視する
             if (!japaneseRegExp.test(lastStrText)) {
+                return;
+            }
+            // 許可パターンにマッチした場合は無視する
+            if (allowPatterns.find((allowPattern) => allowPattern.test(node.raw))) {
                 return;
             }
             const { valid, periodMark, index } = checkEndsWithPeriod(lastStrText, {
