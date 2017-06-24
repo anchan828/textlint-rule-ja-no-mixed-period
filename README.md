@@ -75,6 +75,9 @@ english only
 - `forceAppendPeriod`: `boolean`
     - 句点で終わって無い場合に`periodMark`を--fix時に追加するかどうか
     - デフォルト: false
+- `allowPatterns`: `RegExp[]`
+    - 句点で終わって無い場合に`periodMark`を--fix時に追加するかどうか
+    - デフォルト: false
 
 ```json
 {
@@ -87,7 +90,9 @@ english only
              // 末尾に絵文字を置くことを許可するか
              "allowEmojiAtEnd": false,
              // 句点で終わって無い場合に`periodMark`を--fix時に追加するかどうか
-             "forceAppendPeriod": false
+             "forceAppendPeriod": false,
+             // 指定した正規表現にマッチした場合は無視する
+             "allowPatterns": []
         }
     }
 }
